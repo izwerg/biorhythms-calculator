@@ -1,0 +1,8 @@
+{
+  "name": "biorhythms-calculator",
+  "description": "Calculation of biorhythms by a person's date of birth. Component for AngularJS",
+  "repository": "https://github.com/alexterliuk/biorhythms-calculator",
+  "dependencies": {
+    "AngularJS": "^1.7.5"
+  }
+}

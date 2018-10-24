@@ -1,0 +1,36 @@
+h1, .table-bio td {
+  text-align: center;
+}
+
+.centrify {
+  width: 480px;
+  margin: 0 auto 15px;
+}
+
+.table-bio {
+  border: 1px solid lightgrey;
+}
+
+.table-bio tbody tr:nth-child(even) {
+  background: #f1efef;
+}
+
+.table-bio thead {
+  background: lightgrey;
+}
+
+table.table-bio th, table.table-bio td {
+  padding: 4px 0;
+}
+
+td[ng-style='red'] {
+  color: red;
+}
+
+td[ng-style='green'] {
+  color: #0eaf0e;
+}
+
+td[ng-style='nocolor'] {
+  color: initial;
+}
