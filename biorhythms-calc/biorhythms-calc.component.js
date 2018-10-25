@@ -7,19 +7,10 @@ angular.module('myApp').component('biorhythmsCalc', {
 
 function BiorhythmsCalcController($scope) {
 
-  this.forbidFuture = function () { /* 1st func is called */
-    var today = new Date();
-    var dd = today.getDate();
-    var mm = today.getMonth() + 1;
-    var yyyy = today.getFullYear();
-    if (dd < 10) {
-      dd = '0' + dd;
-    }
-    if (mm < 10) {
-      mm = '0' + mm;
-    }
-    return yyyy + '-' + mm + '-' + dd;
-  };
+  // Alias which allows copy-pasting between template and controller without changing 'this' to '$ctrl' and vice versa
+  var $ctrl = this;
+
+  $ctrl.birthdayMax = new Date();
 
   this.yourResult = function () { /* 2nd func is called; contains all other functions */
     var bD = document.querySelector('#birthday');
