@@ -125,45 +125,7 @@ function BiorhythmsCalcController($scope) {
       function stringifyVals () {
         for (var y = 0; y < rows.length; y++) {
           for (var x = 1; x < 6; x+=2) {
-            rows[y][x] = rows[y][x].toString();
-            var minus = rows[y][x].charAt(0); /* remember '0' or '-' */
-
-            if (rows[y][x] === '1' || rows[y][x] === '-1') {
-              if (rows[y][x].charAt(0) === '-') {
-                rows[y][x] = '-100';
-              } else {
-                rows[y][x] = '100';
-              }
-            } else if (rows[y][x].length === 1 && rows[y][x] === '0') { /* in case of '0' */
-              rows[y][x] = '0';
-            } else if (rows[y][x].charAt(0) === '-') {
-              rows[y][x] = rows[y][x].slice(3); /* e.g. '-0.9791' to '9791', '-0.817' to '817', '-0.0951' to '0951', '-0.036' to '036' */
-            } else if (rows[y][x].charAt(0) !== '-') {
-              rows[y][x] = rows[y][x].slice(2); /* e.g. '0.6182' to '6182', '0.0951' to '0951', '0.866' to '866' */
-            }
-
-            if (rows[y][x].length === 3 && rows[y][x].charAt(0) !== '0' && rows[y][x] !== '100') {
-              rows[y][x] = rows[y][x].substring(0,2).concat('.').concat(rows[y][x].substring(2)); /* '817' to '81.7' */
-            } else if (rows[y][x].length === 4 && rows[y][x].charAt(0) === '0') {
-              rows[y][x] = rows[y][x].substring(1,2).concat('.').concat(rows[y][x].substring(2)); /* '0951' to '9.51' */
-            } else if (rows[y][x].length === 3 && rows[y][x].charAt(0) === '0') {
-              rows[y][x] = rows[y][x].substring(1,2).concat('.').concat(rows[y][x].substring(2)); /* '036' to '3.6' */
-            } else if (rows[y][x].length !== 1 && rows[y][x] !== '-100') {
-              rows[y][x] = rows[y][x].substring(0,2).concat('.').concat(rows[y][x].substring(2));
-            }
-
-            if (rows[y][x] !== '0') {
-              if (rows[y][x] === "100" || rows[y][x] === "-100") {
-                rows[y][x] = rows[y][x].concat('%');
-              } else {
-                rows[y][x] = Number(rows[y][x]).toFixed(1);
-                if (minus === '-') {
-                  rows[y][x] = '-'.concat(rows[y][x]).concat('%');
-                } else {
-                  rows[y][x] = rows[y][x].concat('%');
-                }
-              }
-            }
+            rows[y][x] = (rows[y][x] * 100).toFixed(1) + '%';
           }
         }
       }
