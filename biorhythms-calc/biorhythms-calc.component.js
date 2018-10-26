@@ -111,7 +111,7 @@ function BiorhythmsCalcController($scope) {
         insertValsInArr(intel);
 
         function insertValsInArr (bior) {
-          if (bior === -0) {bior = 0;}
+          if (bior === -0) {bior = 0;}  // TODO: WHAT???????????????????????????????????
           bior === 0 ? rows[i].push(bior) && rows[i].push('nocolor') :
             bior > 0 ? rows[i].push(bior) && rows[i].push('green') :
               rows[i].push(bior) && rows[i].push('red');
