@@ -12,7 +12,7 @@ function BiorhythmsCalcController($scope) {
 
   $ctrl.birthdayMax = new Date();
 
-  this.yourResult = function () { /* 2nd func is called; contains all other functions */
+  $ctrl.yourResult = function () { /* 2nd func is called; contains all other functions */
     var bD = document.querySelector('#birthday');
     var bDay = document.querySelector('#birthday').value;
     console.log('A user provided birthday: ' + bDay);
@@ -111,7 +111,6 @@ function BiorhythmsCalcController($scope) {
         insertValsInArr(intel);
 
         function insertValsInArr (bior) {
-          if (bior === -0) {bior = 0;}  // TODO: WHAT???????????????????????????????????
           bior === 0 ? rows[i].push(bior) && rows[i].push('nocolor') :
             bior > 0 ? rows[i].push(bior) && rows[i].push('green') :
               rows[i].push(bior) && rows[i].push('red');
@@ -150,9 +149,9 @@ function BiorhythmsCalcController($scope) {
 
     fullDaysFromBirth();
 
-    this.dataForDay = rows;
+    $ctrl.dataForDay = rows;
 
-    this.howManyLived = {
+    $ctrl.howManyLived = {
       days: ['You have lived', daysLived-rows.length-1, 'days, '], /* if [ daysLived-rows.length ] current day is added to sum of days */
       weeks: [weeksLived, ' weeks, and '],
       years: [yearsLived(bDay, now), ' years by now.']
