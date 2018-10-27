@@ -152,9 +152,9 @@ function BiorhythmsCalcController($scope) {
     $ctrl.dataForDay = rows;
 
     $ctrl.howManyLived = {
-      days: ['You have lived', daysLived-rows.length-1, 'days, '], /* if [ daysLived-rows.length ] current day is added to sum of days */
+      days: ['You are', daysLived-rows.length-1, 'days, '], /* if [ daysLived-rows.length ] current day is added to sum of days */
       weeks: [weeksLived, ' weeks, and '],
-      years: [yearsLived(bDay, now), ' years by now.']
+      years: [yearsLived(bDay, now), ' years old by now.']
     };
 
   }; /* [END] of yourResult */
