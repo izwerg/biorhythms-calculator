@@ -25,7 +25,7 @@ function BiorhythmsCalcController($scope) {
 
     var fullDaysFromBirth = function () {
       var bDayMs = Date.now() - Date.parse(bDay);
-      var qOfDays = (a) => {
+      var qOfDays = function () {
         return (bDayMs / 1000 / 86400).toFixed();
       };
       var days = qOfDays(bDay);
