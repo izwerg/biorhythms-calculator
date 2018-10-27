@@ -135,7 +135,7 @@ function BiorhythmsCalcController($scope) {
 
     var currentMonthDaysLeft = function() {
       var a = new Date();
-      var today = `${a.getFullYear()}-${a.getMonth()+1}-${a.getDate()}`;
+      var today = '' + a.getFullYear() + '-' + (a.getMonth()+1) + '-' + a.getDate();
       var day = Number(today.slice(8));
       var keepToday = Number(today.slice(8));
 
