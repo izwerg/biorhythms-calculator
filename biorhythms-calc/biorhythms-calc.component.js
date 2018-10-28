@@ -5,23 +5,18 @@ angular.module('myApp').component('biorhythmsCalc', {
   controller: BiorhythmsCalcController
 });
 
-function BiorhythmsCalcController($scope) {
+function BiorhythmsCalcController($scope, $filter) {
 
   // Alias which allows copy-pasting between template and controller without changing 'this' to '$ctrl' and vice versa
   var $ctrl = this;
-
   $ctrl.birthdayMax = new Date();
+  $ctrl.birthday = null;
 
   $ctrl.yourResult = function () { /* 2nd func is called; contains all other functions */
-    var bD = document.querySelector('#birthday');
-    var bDay = document.querySelector('#birthday').value;
-    console.log('A user provided birthday: ' + bDay);
-    var bDAsNum = bD.valueAsNumber;
-    var now = document.querySelector('#birthday').getAttribute('max');
-    if (bDay === '' || bDAsNum > Date.parse(now)) {
-      console.log('No date or a future date provided');
-      return;
-    }
+    var bDay = $filter('date')($ctrl.birthday, 'yyyy-MM-dd');
+    console.log('A user provided birthday: ', bDay);
+    var now = $filter('date')($ctrl.birthdayMax, 'yyyy-MM-dd');
+    console.log('now: ', now);
 
     var fullDaysFromBirth = function () {
       var bDayMs = Date.now() - Date.parse(bDay);
@@ -50,8 +45,6 @@ function BiorhythmsCalcController($scope) {
       var NW = datesAsNums[1]; /* now */
       var BDpassed = true;
       var years = NW[0]-BD[0];
-      console.log('BD: ', BD);
-      console.log('NW: ', NW);
       console.log('BDpassed: ' + BDpassed);
       console.log('years a person has lived: ' + years);
 
@@ -59,7 +52,8 @@ function BiorhythmsCalcController($scope) {
         // compare months
         if (NW[1]-BD[1] < 0) {
           BDpassed = false;
-          // stop if current year's month (e.g. Apr) is less than birthday month (e.g. Oct); i.e. this year the person hasn't yet updated his age
+          // stop if current year's month (e.g. Apr) is less than birthday month (e.g. Oct);
+          // i.e. this year the person hasn't yet updated his age
           break compareDates;
         } else if (NW[1]-BD[1] > 0) {
           break compareDates;
@@ -90,43 +84,45 @@ function BiorhythmsCalcController($scope) {
       var daysNowAndTillEnd = currentMonthDaysLeft();
       console.log('daysNowAndTillEnd: ' + daysNowAndTillEnd[0] + ' and ' + daysNowAndTillEnd[1]);
 
-      for (var i = 0; i < daysNowAndTillEnd[1]; i++) {
-        function getMonthAndYear() {
-          var months = ['Jan', 'Feb', 'Mar', 'Arp', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
-          var a = new Date();
-          var y = a.getFullYear();
-          var m = a.getMonth();
-          return ' '.concat(months[m]).concat(' ').concat(y);
-        }
-
-        rows[i] = [daysNowAndTillEnd[0].toString().concat(getMonthAndYear())];
-
-        var phys = Number(Math.sin(2*3.14159265*(daysLived-1)/23).toFixed(4));
-        insertValsInArr(phys);
-
-        var emot = Number(Math.sin(2*3.14159265*(daysLived-1)/28).toFixed(4));
-        insertValsInArr(emot);
-
-        var intel = Number(Math.sin(2*3.14159265*(daysLived-1)/33).toFixed(4));
-        insertValsInArr(intel);
-
-        function insertValsInArr (bior) {
-          bior === 0 ? rows[i].push(bior) && rows[i].push('nocolor') :
-            bior > 0 ? rows[i].push(bior) && rows[i].push('green') :
-              rows[i].push(bior) && rows[i].push('red');
-        }
-
-        daysLived = Number(daysLived);
-        daysLived+=1;
-        daysNowAndTillEnd[0]+=1;
+      function getMonthAndYear() {
+        var a = $filter('date')($ctrl.birthdayMax, 'MMM-yyyy');
+        return ' ' + a.replace(/-/g, ' ');
       }
 
       function stringifyVals () {
         for (var y = 0; y < rows.length; y++) {
           for (var x = 1; x < 6; x+=2) {
             rows[y][x] = (rows[y][x] * 100).toFixed(1) + '%';
+            //make zero be a single digit (and colourless in insertValsInArr)
+            if (rows[y][x] === '0.0%' || rows[y][x] === '-0.0%') {
+              rows[y][x] = 0;
+            }
           }
         }
+      }
+
+      function insertValsInArr (bior, num) {
+        bior === 0 ? rows[num].push(bior) && rows[num].push('nocolor') :
+          bior > 0 ? rows[num].push(bior) && rows[num].push('green') :
+            rows[num].push(bior) && rows[num].push('red');
+      }
+
+      for (var i = 0; i < daysNowAndTillEnd[1]; i++) {
+
+        rows[i] = [daysNowAndTillEnd[0].toString().concat(getMonthAndYear())];
+
+        var phys = Number(Math.sin(2*3.14159265*(daysLived-1)/23).toFixed(4));
+        insertValsInArr(phys, i);
+
+        var emot = Number(Math.sin(2*3.14159265*(daysLived-1)/28).toFixed(4));
+        insertValsInArr(emot, i);
+
+        var intel = Number(Math.sin(2*3.14159265*(daysLived-1)/33).toFixed(4));
+        insertValsInArr(intel, i);
+
+        daysLived = Number(daysLived);
+        daysLived+=1;
+        daysNowAndTillEnd[0]+=1;
       }
 
       stringifyVals();

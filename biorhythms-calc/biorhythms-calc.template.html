@@ -2,7 +2,7 @@
 
 <form class="centrify">
   <label for="birthday">Please enter your birthday:</label>
-  <input type="date" id="birthday" max="{{$ctrl.birthdayMax | date:'yyyy-MM-dd'}}">
+  <input type="date" id="birthday" ng-model="$ctrl.birthday" max="{{$ctrl.birthdayMax | date:'yyyy-MM-dd'}}">
   <button id="getBioBtn" ng-click="$ctrl.yourResult()">calculate</button>
 </form>
 
