@@ -29,6 +29,8 @@ function BiorhythmsCalcController($scope, $filter) {
     var daysLived = null;
     var weeksLived = null;
 
+    // TODO: you have similar names for variables and functions: daysLived vs yearsLived. When you need to use one of them,
+    // TODO: how do you know should you call function or use variable? Function name should contain verb in name.
     function yearsLived (b, n) {
       // b - birthday, n - now
       var nums = function(arr) {
