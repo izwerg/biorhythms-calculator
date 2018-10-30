@@ -126,13 +126,13 @@ function BiorhythmsCalcController($scope, $filter) {
 
         rows[i] = [daysNowAndTillEnd[0].toString().concat(getMonthAndYear())];
 
-        var phys = Number(Math.sin(2 * 3.14159265 * (daysLived - 1) / 23).toFixed(4));
+        var phys = Number(Math.sin(2 * Math.PI * (daysLived - 1) / 23).toFixed(4));
         insertValsInArr(phys, i);
 
-        var emot = Number(Math.sin(2 * 3.14159265 * (daysLived - 1) / 28).toFixed(4));
+        var emot = Number(Math.sin(2 * Math.PI * (daysLived - 1) / 28).toFixed(4));
         insertValsInArr(emot, i);
 
-        var intel = Number(Math.sin(2 * 3.14159265 * (daysLived - 1) / 33).toFixed(4));
+        var intel = Number(Math.sin(2 * Math.PI * (daysLived - 1) / 33).toFixed(4));
         insertValsInArr(intel, i);
 
         daysLived = Number(daysLived);
