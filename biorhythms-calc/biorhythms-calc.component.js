@@ -91,7 +91,7 @@ function BiorhythmsCalcController($scope, $filter) {
 
       function stringifyVals () {
         for (var y = 0; y < rows.length; y++) {
-          for (var x = 1; x < 6; x+=2) {
+          for (var x = 1; x < 6; x += 2) {
             rows[y][x] = (rows[y][x] * 100).toFixed(1) + '%';
             //make zero be a single digit (and colourless in insertValsInArr)
             if (rows[y][x] === '0.0%' || rows[y][x] === '-0.0%') {
