@@ -102,9 +102,24 @@ function BiorhythmsCalcController($scope, $filter) {
       }
 
       function insertValsInArr (bior, num) {
+        // TODO: never write such code, hard to understand and hard to debug, 2 problems:
+        // TODO: 1. ternary conditional operator should not be used instead of if
+        // TODO: 2. operator && should not be used without assignment or condition
         bior === 0 ? rows[num].push(bior) && rows[num].push('nocolor') :
           bior > 0 ? rows[num].push(bior) && rows[num].push('green') :
             rows[num].push(bior) && rows[num].push('red');
+
+        // TODO: correct version of the code
+        // if(bior === 0) {
+        //   rows[num].push(bior);
+        //   rows[num].push('nocolor');
+        // } else if(bior > 0) {
+        //   rows[num].push(bior);
+        //   rows[num].push('green');
+        // } else {
+        //   rows[num].push(bior);
+        //   rows[num].push('red');
+        // }
       }
 
       for (var i = 0; i < daysNowAndTillEnd[1]; i++) {
