@@ -12,6 +12,11 @@ function BiorhythmsCalcController($scope, $filter) {
   $ctrl.birthdayMax = new Date();
   $ctrl.birthday = null;
 
+  function countDaysBetweenDates(date1, date2) {
+    return Math.ceil(Math.abs(date2 - date1) / 1000 / 86400); // with current day
+    // return Math.floor(Math.abs(date2 - date1) / 1000 / 86400); // without current day
+  }
+
   $ctrl.yourResult = function () { /* 2nd func is called; contains all other functions */
     // TODO: you don't need to convert Date to string, you can operate with Date type directly and finally convert to string
     var bDay = $filter('date')($ctrl.birthday, 'yyyy-MM-dd');
@@ -19,15 +24,6 @@ function BiorhythmsCalcController($scope, $filter) {
     // TODO: Why now is equal to birthdayMax? If I decide to change birthdayMax above, it will change now.
     var now = $filter('date')($ctrl.birthdayMax, 'yyyy-MM-dd');
     console.log('now: ', now);
-
-    function fullDaysFromBirth () {
-      var bDayMs = Date.now() - Date.parse(bDay);
-      var qOfDays = function () {
-        return (bDayMs / 1000 / 86400).toFixed();
-      };
-      var days = qOfDays(bDay);
-      calculateBiorhythms(days);
-    }
 
     var rows = [null];
     var daysLived = null;
@@ -160,7 +156,8 @@ function BiorhythmsCalcController($scope, $filter) {
       return [keepToday, day-keepToday];
     }
 
-    fullDaysFromBirth();
+    var daysFromBirth = countDaysBetweenDates(new Date(), $ctrl.birthday);
+    calculateBiorhythms(daysFromBirth);
 
     $ctrl.dataForDay = rows;
 
