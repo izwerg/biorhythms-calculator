@@ -36,7 +36,7 @@ function BiorhythmsCalcController($scope, $filter) {
       var nums = function(arr) {
         var split = arr.split('-');
         var newArr = [null];
-        split.forEach(function(el){newArr.push(Number(el))});
+        split.forEach(function(el){ newArr.push(Number(el)) });
         newArr.shift();
         return newArr;
       };
@@ -44,22 +44,22 @@ function BiorhythmsCalcController($scope, $filter) {
       var BD = datesAsNums[0]; /* birthday */
       var NW = datesAsNums[1]; /* now */
       var BDpassed = true;
-      var years = NW[0]-BD[0];
+      var years = NW[0] - BD[0];
       console.log('BDpassed: ' + BDpassed);
       console.log('years a person has lived: ' + years);
 
-      compareDates: if (NW[0]-BD[0] !== 0) {
+      compareDates: if (NW[0] - BD[0] !== 0) {
         // compare months
-        if (NW[1]-BD[1] < 0) {
+        if (NW[1] - BD[1] < 0) {
           BDpassed = false;
           // stop if current year's month (e.g. Apr) is less than birthday month (e.g. Oct);
           // i.e. this year the person hasn't yet updated his age
           break compareDates;
-        } else if (NW[1]-BD[1] > 0) {
+        } else if (NW[1] - BD[1] > 0) {
           break compareDates;
         } else {
           // in case if months coincide check days, BDpassed at the moment is true
-          if (NW[2]-BD[2] < 0) {
+          if (NW[2] - BD[2] < 0) {
             BDpassed = false;
             console.log('BDpassed compareDays console calling: ' + BDpassed);
           }
@@ -69,7 +69,7 @@ function BiorhythmsCalcController($scope, $filter) {
       console.log('BDpassed: ' + BDpassed);
 
       if (BDpassed === false) {
-        years = years-1;
+        years = years - 1;
       }
 
       console.log('years AFTER CORRECTION: ' + years);
@@ -80,7 +80,7 @@ function BiorhythmsCalcController($scope, $filter) {
     function calculateBiorhythms (val) {
       daysLived = val;
       console.log('daysLived: ', daysLived, ' (including current day)');
-      weeksLived = (daysLived/7).toFixed(3).slice(0,-4);
+      weeksLived = (daysLived / 7).toFixed(3).slice(0, -4);
       var daysNowAndTillEnd = currentMonthDaysLeft();
       console.log('daysNowAndTillEnd: ' + daysNowAndTillEnd[0] + ' and ' + daysNowAndTillEnd[1]);
 
@@ -126,18 +126,18 @@ function BiorhythmsCalcController($scope, $filter) {
 
         rows[i] = [daysNowAndTillEnd[0].toString().concat(getMonthAndYear())];
 
-        var phys = Number(Math.sin(2*3.14159265*(daysLived-1)/23).toFixed(4));
+        var phys = Number(Math.sin(2 * 3.14159265 * (daysLived - 1) / 23).toFixed(4));
         insertValsInArr(phys, i);
 
-        var emot = Number(Math.sin(2*3.14159265*(daysLived-1)/28).toFixed(4));
+        var emot = Number(Math.sin(2 * 3.14159265 * (daysLived - 1) / 28).toFixed(4));
         insertValsInArr(emot, i);
 
-        var intel = Number(Math.sin(2*3.14159265*(daysLived-1)/33).toFixed(4));
+        var intel = Number(Math.sin(2 * 3.14159265 * (daysLived - 1) / 33).toFixed(4));
         insertValsInArr(intel, i);
 
         daysLived = Number(daysLived);
-        daysLived+=1;
-        daysNowAndTillEnd[0]+=1;
+        daysLived += 1;
+        daysNowAndTillEnd[0] += 1;
       }
 
       stringifyVals();
@@ -146,16 +146,16 @@ function BiorhythmsCalcController($scope, $filter) {
 
     function currentMonthDaysLeft() {
       var a = new Date();
-      var today = '' + a.getFullYear() + '-' + (a.getMonth()+1) + '-' + a.getDate();
+      var today = '' + a.getFullYear() + '-' + (a.getMonth() + 1) + '-' + a.getDate();
       var day = Number(today.slice(8));
       var keepToday = Number(today.slice(8));
 
       do {
-        day+=1;
-        today = today.slice(0,8).concat(day);
+        day += 1;
+        today = today.slice(0, 8).concat(day);
       } while (typeof Date.parse(today) === "number" && isNaN(Date.parse(today)) !== true);
       // returns today's date and days left to the end of the current month (including curr.day; gives q of rows for table)
-      return [keepToday, day-keepToday];
+      return [keepToday, day - keepToday];
     }
 
     var daysFromBirth = countDaysBetweenDates(new Date(), $ctrl.birthday);
@@ -164,7 +164,7 @@ function BiorhythmsCalcController($scope, $filter) {
     $ctrl.dataForDay = rows;
 
     $ctrl.howManyLived = {
-      days: ['You are', daysLived-rows.length-1, 'days, '], /* if [ daysLived-rows.length ] current day is added to sum of days */
+      days: ['You are', daysLived - rows.length - 1, 'days, '], /* if [daysLived - rows.length] current day is added to sum of days */
       weeks: [weeksLived, ' weeks, and '],
       years: [yearsLived(bDay, now), ' years old by now.']
     };
