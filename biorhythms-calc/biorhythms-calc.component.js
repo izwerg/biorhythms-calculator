@@ -25,9 +25,9 @@ function BiorhythmsCalcController($scope, $filter) {
     var now = $filter('date')($ctrl.birthdayMax, 'yyyy-MM-dd');
     console.log('now: ', now);
 
-    var rows = [null];
-    var daysLived = null;
-    var weeksLived = null;
+    // var rows = [null]; // TODO: why [null]? This means array with one null value. Do you really need it?
+    // var daysLived = null;
+    // var weeksLived = null;
 
     // TODO: you have similar names for variables and functions: daysLived vs yearsLived. When you need to use one of them,
     // TODO: how do you know should you call function or use variable? Function name should contain verb in name.
@@ -77,10 +77,9 @@ function BiorhythmsCalcController($scope, $filter) {
       return years;
     }
 
-    function calculateBiorhythms (val) {
-      daysLived = val;
-      console.log('daysLived: ', daysLived, ' (including current day)');
-      weeksLived = (daysLived / 7).toFixed(3).slice(0, -4);
+    function calculateBiorhythms (daysLived) {
+      var rows = [];
+
       var daysNowAndTillEnd = currentMonthDaysLeft();
       console.log('daysNowAndTillEnd: ' + daysNowAndTillEnd[0] + ' and ' + daysNowAndTillEnd[1]);
 
@@ -142,6 +141,8 @@ function BiorhythmsCalcController($scope, $filter) {
 
       stringifyVals();
       console.log('data for table rows: ', rows);
+
+      return rows;
     } /* [END] of calculateBiorhythms */
 
     function currentMonthDaysLeft() {
@@ -158,13 +159,13 @@ function BiorhythmsCalcController($scope, $filter) {
       return [keepToday, day - keepToday];
     }
 
-    var daysFromBirth = countDaysBetweenDates(new Date(), $ctrl.birthday);
-    calculateBiorhythms(daysFromBirth);
+    var daysLived = countDaysBetweenDates(new Date(), $ctrl.birthday);
+    var weeksLived = Math.floor(daysLived / 7);
 
-    $ctrl.dataForDay = rows;
+    $ctrl.dataForDay = calculateBiorhythms(daysLived);
 
     $ctrl.howManyLived = {
-      days: ['You are', daysLived - rows.length - 1, 'days, '], /* if [daysLived - rows.length] current day is added to sum of days */
+      days: ['You are', daysLived - 1, 'days, '], /* current day is added to sum of days */
       weeks: [weeksLived, ' weeks, and '],
       years: [yearsLived(bDay, now), ' years old by now.']
     };
