@@ -13,8 +13,10 @@ function BiorhythmsCalcController($scope, $filter) {
   $ctrl.birthday = null;
 
   $ctrl.yourResult = function () { /* 2nd func is called; contains all other functions */
+    // TODO: you don't need to convert Date to string, you can operate with Date type directly and finally convert to string
     var bDay = $filter('date')($ctrl.birthday, 'yyyy-MM-dd');
     console.log('A user provided birthday: ', bDay);
+    // TODO: Why now is equal to birthdayMax? If I decide to change birthdayMax above, it will change now.
     var now = $filter('date')($ctrl.birthdayMax, 'yyyy-MM-dd');
     console.log('now: ', now);
 
