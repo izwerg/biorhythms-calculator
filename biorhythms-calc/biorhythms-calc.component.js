@@ -33,17 +33,17 @@ function BiorhythmsCalcController($scope, $filter) {
     // TODO: how do you know should you call function or use variable? Function name should contain verb in name.
     function yearsLived (b, n) {
       // b - birthday, n - now
-      var nums = function(arr) {
+      function nums(arr) {
         var split = arr.split('-');
         var newArr = [null];
         split.forEach(function(el){ newArr.push(Number(el)) });
         newArr.shift();
         return newArr;
-      };
+      }
       var datesAsNums = [nums(b), nums(n)];
       var BD = datesAsNums[0]; /* birthday */
       var NW = datesAsNums[1]; /* now */
-      var BDpassed = true;
+      var BDpassed = true; // TODO: what does BDpassed mean? Bad name for variable.
       var years = NW[0] - BD[0];
       console.log('BDpassed: ' + BDpassed);
       console.log('years a person has lived: ' + years);
