@@ -6,28 +6,19 @@ angular.module('myApp').component('biorhythmsCalc', {
 });
 
 function BiorhythmsCalcController($scope, $filter) {
-
-  // Alias which allows copy-pasting between template and controller without changing 'this' to '$ctrl' and vice versa
   var $ctrl = this;
   $ctrl.birthdayMax = new Date();
   $ctrl.birthday = null;
 
   function countDaysBetweenDates(date1, date2) {
     return Math.ceil(Math.abs(date2 - date1) / 1000 / 86400); // with current day
-    // return Math.floor(Math.abs(date2 - date1) / 1000 / 86400); // without current day
   }
 
-  $ctrl.yourResult = function () { /* 2nd func is called; contains all other functions */
-    // TODO: you don't need to convert Date to string, you can operate with Date type directly and finally convert to string
-    var bDay = $filter('date')($ctrl.birthday, 'yyyy-MM-dd');
+  $ctrl.yourResult = function () {
+    var bDay = $filter('date')($ctrl.birthday);
     console.log('A user provided birthday: ', bDay);
-    // TODO: Why now is equal to birthdayMax? If I decide to change birthdayMax above, it will change now.
-    var now = $filter('date')($ctrl.birthdayMax, 'yyyy-MM-dd');
+    var now = new Date();
     console.log('now: ', now);
-
-    // var rows = [null]; // TODO: why [null]? This means array with one null value. Do you really need it?
-    // var daysLived = null;
-    // var weeksLived = null;
 
     // TODO: you have similar names for variables and functions: daysLived vs yearsLived. When you need to use one of them,
     // TODO: how do you know should you call function or use variable? Function name should contain verb in name.
@@ -43,32 +34,32 @@ function BiorhythmsCalcController($scope, $filter) {
       var datesAsNums = [nums(b), nums(n)];
       var BD = datesAsNums[0]; /* birthday */
       var NW = datesAsNums[1]; /* now */
-      var BDpassed = true; // TODO: what does BDpassed mean? Bad name for variable.
+      var isBirthdayPassedThisYear = true;
       var years = NW[0] - BD[0];
-      console.log('BDpassed: ' + BDpassed);
+      console.log('isBirthdayPassedThisYear: ' + isBirthdayPassedThisYear);
       console.log('years a person has lived: ' + years);
 
       compareDates: if (NW[0] - BD[0] !== 0) {
         // compare months
         if (NW[1] - BD[1] < 0) {
-          BDpassed = false;
+          isBirthdayPassedThisYear = false;
           // stop if current year's month (e.g. Apr) is less than birthday month (e.g. Oct);
           // i.e. this year the person hasn't yet updated his age
           break compareDates;
         } else if (NW[1] - BD[1] > 0) {
           break compareDates;
         } else {
-          // in case if months coincide check days, BDpassed at the moment is true
+          // in case if months coincide check days, isBirthdayPassedThisYear is true at the moment
           if (NW[2] - BD[2] < 0) {
-            BDpassed = false;
-            console.log('BDpassed compareDays console calling: ' + BDpassed);
+            isBirthdayPassedThisYear = false;
+            console.log('at the moment compareDays console calling: ' + isBirthdayPassedThisYear);
           }
         }
       }
 
-      console.log('BDpassed: ' + BDpassed);
+      console.log('isBirthdayPassedThisYear: ' + isBirthdayPassedThisYear);
 
-      if (BDpassed === false) {
+      if (isBirthdayPassedThisYear === false) {
         years = years - 1;
       }
 
@@ -101,24 +92,16 @@ function BiorhythmsCalcController($scope, $filter) {
       }
 
       function insertValsInArr (bior, num) {
-        // TODO: never write such code, hard to understand and hard to debug, 2 problems:
-        // TODO: 1. ternary conditional operator should not be used instead of if
-        // TODO: 2. operator && should not be used without assignment or condition
-        bior === 0 ? rows[num].push(bior) && rows[num].push('nocolor') :
-          bior > 0 ? rows[num].push(bior) && rows[num].push('green') :
-            rows[num].push(bior) && rows[num].push('red');
-
-        // TODO: correct version of the code
-        // if(bior === 0) {
-        //   rows[num].push(bior);
-        //   rows[num].push('nocolor');
-        // } else if(bior > 0) {
-        //   rows[num].push(bior);
-        //   rows[num].push('green');
-        // } else {
-        //   rows[num].push(bior);
-        //   rows[num].push('red');
-        // }
+        if(bior === 0) {
+           rows[num].push(bior);
+           rows[num].push('nocolor');
+        } else if(bior > 0) {
+           rows[num].push(bior);
+           rows[num].push('green');
+        } else {
+           rows[num].push(bior);
+           rows[num].push('red');
+        }
       }
 
       for (var i = 0; i < daysNowAndTillEnd[1]; i++) {
