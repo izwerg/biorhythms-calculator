@@ -6,81 +6,71 @@ angular.module('myApp').component('biorhythmsCalc', {
 });
 
 function BiorhythmsCalcController($scope, $filter) {
-
-  // Alias which allows copy-pasting between template and controller without changing 'this' to '$ctrl' and vice versa
   var $ctrl = this;
   $ctrl.birthdayMax = new Date();
   $ctrl.birthday = null;
 
-  $ctrl.yourResult = function () { /* 2nd func is called; contains all other functions */
-    var bDay = $filter('date')($ctrl.birthday, 'yyyy-MM-dd');
+  function countDaysBetweenDates(date1, date2) {
+    return Math.ceil(Math.abs(date2 - date1) / 1000 / 86400); // with current day
+  }
+
+  $ctrl.yourResult = function () {
+    var bDay = $filter('date')($ctrl.birthday);
     console.log('A user provided birthday: ', bDay);
-    var now = $filter('date')($ctrl.birthdayMax, 'yyyy-MM-dd');
+    var now = new Date();
     console.log('now: ', now);
 
-    var fullDaysFromBirth = function () {
-      var bDayMs = Date.now() - Date.parse(bDay);
-      var qOfDays = function () {
-        return (bDayMs / 1000 / 86400).toFixed();
-      };
-      var days = qOfDays(bDay);
-      calculateBiorhythms(days);
-    };
-
-    var rows = [null];
-    var daysLived = null;
-    var weeksLived = null;
-
-    var yearsLived = function (b, n) {
+    // TODO: you have similar names for variables and functions: daysLived vs yearsLived. When you need to use one of them,
+    // TODO: how do you know should you call function or use variable? Function name should contain verb in name.
+    function yearsLived (b, n) {
       // b - birthday, n - now
-      var nums = function(arr) {
+      function nums(arr) {
         var split = arr.split('-');
         var newArr = [null];
-        split.forEach(function(el){newArr.push(Number(el))});
+        split.forEach(function(el){ newArr.push(Number(el)) });
         newArr.shift();
         return newArr;
-      };
+      }
       var datesAsNums = [nums(b), nums(n)];
       var BD = datesAsNums[0]; /* birthday */
       var NW = datesAsNums[1]; /* now */
-      var BDpassed = true;
-      var years = NW[0]-BD[0];
-      console.log('BDpassed: ' + BDpassed);
+      var isBirthdayPassedThisYear = true;
+      var years = NW[0] - BD[0];
+      console.log('isBirthdayPassedThisYear: ' + isBirthdayPassedThisYear);
       console.log('years a person has lived: ' + years);
 
-      compareDates: if (NW[0]-BD[0] !== 0) {
+      compareDates: if (NW[0] - BD[0] !== 0) {
         // compare months
-        if (NW[1]-BD[1] < 0) {
-          BDpassed = false;
+        if (NW[1] - BD[1] < 0) {
+          isBirthdayPassedThisYear = false;
           // stop if current year's month (e.g. Apr) is less than birthday month (e.g. Oct);
           // i.e. this year the person hasn't yet updated his age
           break compareDates;
-        } else if (NW[1]-BD[1] > 0) {
+        } else if (NW[1] - BD[1] > 0) {
           break compareDates;
         } else {
-          // in case if months coincide check days, BDpassed at the moment is true
-          if (NW[2]-BD[2] < 0) {
-            BDpassed = false;
-            console.log('BDpassed compareDays console calling: ' + BDpassed);
+          // in case if months coincide check days, isBirthdayPassedThisYear is true at the moment
+          if (NW[2] - BD[2] < 0) {
+            isBirthdayPassedThisYear = false;
+            console.log('at the moment compareDays console calling: ' + isBirthdayPassedThisYear);
           }
         }
       }
 
-      console.log('BDpassed: ' + BDpassed);
+      console.log('isBirthdayPassedThisYear: ' + isBirthdayPassedThisYear);
 
-      if (BDpassed === false) {
-        years = years-1;
+      if (isBirthdayPassedThisYear === false) {
+        years = years - 1;
       }
 
       console.log('years AFTER CORRECTION: ' + years);
 
       return years;
-    };
+    }
 
-    var calculateBiorhythms = function (val) {
-      daysLived = val;
-      console.log('daysLived: ', daysLived, ' (including current day)');
-      weeksLived = (daysLived/7).toFixed(3).slice(0,-4);
+    function calculateBiorhythms (daysLived) {
+      var rows = [];
+
       var daysNowAndTillEnd = currentMonthDaysLeft();
       console.log('daysNowAndTillEnd: ' + daysNowAndTillEnd[0] + ' and ' + daysNowAndTillEnd[1]);
 
@@ -91,7 +81,7 @@ function BiorhythmsCalcController($scope, $filter) {
 
       function stringifyVals () {
         for (var y = 0; y < rows.length; y++) {
-          for (var x = 1; x < 6; x+=2) {
+          for (var x = 1; x < 6; x += 2) {
             rows[y][x] = (rows[y][x] * 100).toFixed(1) + '%';
             //make zero be a single digit (and colourless in insertValsInArr)
             if (rows[y][x] === '0.0%' || rows[y][x] === '-0.0%') {
@@ -102,53 +92,63 @@ function BiorhythmsCalcController($scope, $filter) {
       }
 
       function insertValsInArr (bior, num) {
-        bior === 0 ? rows[num].push(bior) && rows[num].push('nocolor') :
-          bior > 0 ? rows[num].push(bior) && rows[num].push('green') :
-            rows[num].push(bior) && rows[num].push('red');
+        if(bior === 0) {
+           rows[num].push(bior);
+           rows[num].push('nocolor');
+        } else if(bior > 0) {
+           rows[num].push(bior);
+           rows[num].push('green');
+        } else {
+           rows[num].push(bior);
+           rows[num].push('red');
+        }
       }
 
       for (var i = 0; i < daysNowAndTillEnd[1]; i++) {
 
         rows[i] = [daysNowAndTillEnd[0].toString().concat(getMonthAndYear())];
 
-        var phys = Number(Math.sin(2*3.14159265*(daysLived-1)/23).toFixed(4));
+        var phys = Number(Math.sin(2 * Math.PI * (daysLived - 1) / 23).toFixed(4));
         insertValsInArr(phys, i);
 
-        var emot = Number(Math.sin(2*3.14159265*(daysLived-1)/28).toFixed(4));
+        var emot = Number(Math.sin(2 * Math.PI * (daysLived - 1) / 28).toFixed(4));
         insertValsInArr(emot, i);
 
-        var intel = Number(Math.sin(2*3.14159265*(daysLived-1)/33).toFixed(4));
+        var intel = Number(Math.sin(2 * Math.PI * (daysLived - 1) / 33).toFixed(4));
         insertValsInArr(intel, i);
 
         daysLived = Number(daysLived);
-        daysLived+=1;
-        daysNowAndTillEnd[0]+=1;
+        daysLived += 1;
+        daysNowAndTillEnd[0] += 1;
       }
 
       stringifyVals();
       console.log('data for table rows: ', rows);
-    }; /* [END] of calculateBiorhythms */
 
-    var currentMonthDaysLeft = function() {
+      return rows;
+    } /* [END] of calculateBiorhythms */
+
+    function currentMonthDaysLeft() {
       var a = new Date();
-      var today = '' + a.getFullYear() + '-' + (a.getMonth()+1) + '-' + a.getDate();
+      var today = '' + a.getFullYear() + '-' + (a.getMonth() + 1) + '-' + a.getDate();
       var day = Number(today.slice(8));
       var keepToday = Number(today.slice(8));
 
       do {
-        day+=1;
-        today = today.slice(0,8).concat(day);
+        day += 1;
+        today = today.slice(0, 8).concat(day);
       } while (typeof Date.parse(today) === "number" && isNaN(Date.parse(today)) !== true);
       // returns today's date and days left to the end of the current month (including curr.day; gives q of rows for table)
-      return [keepToday, day-keepToday];
-    };
+      return [keepToday, day - keepToday];
+    }
 
-    fullDaysFromBirth();
+    var daysLived = countDaysBetweenDates(new Date(), $ctrl.birthday);
+    var weeksLived = Math.floor(daysLived / 7);
 
-    $ctrl.dataForDay = rows;
+    $ctrl.dataForDay = calculateBiorhythms(daysLived);
 
     $ctrl.howManyLived = {
-      days: ['You are', daysLived-rows.length-1, 'days, '], /* if [ daysLived-rows.length ] current day is added to sum of days */
+      days: ['You are', daysLived - 1, 'days, '], /* current day is added to sum of days */
       weeks: [weeksLived, ' weeks, and '],
       years: [yearsLived(bDay, now), ' years old by now.']
     };
