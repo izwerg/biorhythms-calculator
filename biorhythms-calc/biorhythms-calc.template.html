@@ -2,8 +2,8 @@
 
 <form class="centrify">
   <label for="birthday">Please enter your birthday:</label>
-  <input type="date" id="birthday" ng-model="$ctrl.birthday" max="{{$ctrl.birthdayMax | date:'yyyy-MM-dd'}}">
-  <button id="getBioBtn" ng-click="$ctrl.yourResult()">calculate</button>
+  <input type="date" id="birthday" ng-model="$ctrl.birthday" max="{{$ctrl.birthdayMax | date:'yyyy-MM-dd'}}" min="{{$ctrl.birthdayMin | date:'yyyy-MM-dd'}}">
+  <button id="getBioBtn" ng-click="$ctrl.getYourResult($ctrl.birthday)">calculate</button>
 </form>
 
 <p class="centrify">
@@ -29,11 +29,11 @@
     </tr>
     </thead>
     <tbody>
-    <tr ng-repeat="data in $ctrl.dataForDay">
-      <td>{{data[0]}}</td>
-      <td ng-style={{data[2]}}>{{data[1]}}</td>
-      <td ng-style={{data[4]}}>{{data[3]}}</td>
-      <td ng-style={{data[6]}}>{{data[5]}}</td>
+    <tr ng-repeat="data in $ctrl.tableData">
+      <td>{{data[0] | date:'dd MMM y'}}</td>
+      <td ng-style={{data[1][1]}}>{{data[1][0]}}</td>
+      <td ng-style={{data[1][3]}}>{{data[1][2]}}</td>
+      <td ng-style={{data[1][5]}}>{{data[1][4]}}</td>
     </tr>
     </tbody>
   </table>
