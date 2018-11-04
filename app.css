@@ -1,3 +1,8 @@
+html {
+  font-family: 'Fira Sans', sans-serif;
+  font-size: 16px;
+}
+
 h1, .table-bio td {
   text-align: center;
 }
@@ -17,6 +22,10 @@ h1, .table-bio td {
 
 .table-bio thead {
   background: lightgrey;
+}
+
+table.table-bio th {
+  text-transform: uppercase;
 }
 
 table.table-bio th, table.table-bio td {
