@@ -1,10 +1,13 @@
 <h1>Biorhythms calculator</h1>
+
 <form class="centrify">
   <label for="birthday">Please enter your birthday:</label>
   <input type="date" id="birthday" ng-model="$ctrl.birthday" max="{{$ctrl.birthdayMax | date:'yyyy-MM-dd'}}" min="{{$ctrl.birthdayMin | date:'yyyy-MM-dd'}}">
   <button id="getBioBtn" ng-click="$ctrl.getYourResult($ctrl.birthday)">calculate</button>
 </form>
+
 <p class="centrify" ng-bind="$ctrl.howManyLived" ng-show="$ctrl.calculated"></p>
+
 <div style="max-height: 500px; position: relative;">
   <table style="overflow: scroll" class="table-bio centrify">
     <thead>
