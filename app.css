@@ -32,14 +32,14 @@ table.table-bio th, table.table-bio td {
   padding: 4px 0;
 }
 
-td[ng-style='red'] {
-  color: red;
-}
-
-td[ng-style='green'] {
+.positive {
   color: #0eaf0e;
 }
 
-td[ng-style='nocolor'] {
+.negative {
+  color: red;
+}
+
+.nocolor {
   color: initial;
 }
