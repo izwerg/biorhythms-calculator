@@ -6,84 +6,29 @@ angular.module('myApp').component('biorhythmsCalc', {
 });
 
 function BiorhythmsCalcController($scope, $filter, $log, calculator) {
-
   var $ctrl = this;
-
   var result = 0;
-
   $ctrl.birthdayMax = new Date();
-
-  $ctrl.birthdayMin = new Date('Jan 1 100');
-
+  $ctrl.birthdayMin = new Date('Jan 1 1900');
   $ctrl.birthday = null;
-
-  $log.log('result before calling getYourResult(): ', result);
-
   $log.log(calculator);
 
+  $ctrl.setColor = function(num) {
+    if (num > 0) {
+      return 'positive';
+    } else if (num < 0) {
+      return 'negative';
+    } else {
+      return 'nocolor';
+    }
+  };
+
   $ctrl.getYourResult = function () {
-
-    $log.log('A user provided birthday: ', $filter('date')($ctrl.birthday));
-
-    result = calculator.makers.getDaysWeeksYears($ctrl.birthday);
-
-    $log.log('result [days, weeks, years, data for table]: ', result);
-
-    $ctrl.howManyLived = {
-
-      days: ['You are ', result[0], ' days, '],
-      weeks: [result[1], ' weeks, and '],
-      years: [result[2], ' years old by now.']
-
-    };
-
-    $ctrl.tableData = makePresentation(calculator.biorhythmsData);
-
-    function makePresentation(arr) {
-
-      var newArr = arr;
-
-      var colors = {green: 'green', red: 'red', nocolor: 'nocolor'};
-
-      for (var i = 0; i < newArr.length; i++) {
-
-        // pos stands for position
-        var pos = -2;
-
-        for (var y = 0; y < 3; y++) {
-
-          pos += 2;
-
-          // stuff array with color values
-          if (newArr[i][1][pos] < 0) {
-
-            newArr[i][1].splice(pos + 1, 0, colors.red);
-
-          } else if (newArr[i][1][pos] > 0) {
-
-            newArr[i][1].splice(pos + 1, 0, colors.green);
-
-          } else {
-
-            newArr[i][1].splice(pos + 1, 0, colors.nocolor);
-
-          }
-
-          // make sure values have decimal number presentation, finish with '%'
-          if (newArr[i][1][pos] !== 0) {
-
-            newArr[i][1][pos] = newArr[i][1][pos].toFixed(1).concat('%');
-
-          }
-
-        }
-
-      }
-
-      return newArr;
-
-    } // ---------- [ END ] of makePresentation ----------
-
-  }; /* ==================== [ END ] of $ctrl.getYourResult ==================== */
-
+    $log.log('A user submitted birthday: ', $filter('date')($ctrl.birthday));
+    result = calculator.getValues($ctrl.birthday);
+    $log.log('result: ', result);
+    $ctrl.howManyLived = 'You are ' + result.daysLived + ' days, ' + result.weeksLived + ' weeks, and ' + result.yearsLived + ' years old by now.';
+    $ctrl.calculated = true;
+    $ctrl.tableData = result.biorhythmsData;
+  };
 }
