@@ -8,12 +8,14 @@ myApp.factory('calculator', ['$log', function($log) {
     var now = new Date();
     var thirtyDays = Date.now() + (86400000 * 30);
 
-    if (Object.keys(biorhythmsData).length === 0) {
+    if (Object.keys(biorhythmsData).length === 0) { // TODO: this is always true as biorhythmsData initialized above with empty object
       var day = 0;
       for (var x = Date.now(); x < thirtyDays; x += 86400000) {
-        biorhythmsData['day' + (day += 1)] = [new Date(x), []];
+        biorhythmsData['day' + (day += 1)] = [new Date(x), []]; // TODO: don't use array instead of object, see below
       }
     }
+
+    // TODO: separate time lived calculation and biorhythms calculation to different functions
 
     var timeBetw1970AndBirthday = Date.now() - birthday;
     var daysLived = 0;
@@ -51,8 +53,14 @@ myApp.factory('calculator', ['$log', function($log) {
       whatDay += 1;
     }
 
+    // TODO: resulting biorhythmsData should be array of objects:
+    // [{ date: DATE, physical: NUMBER, emotional: NUMBER, intellectual: NUMBER }]
+    // instead of object of arrays:
+    // { day1: [DATE, [NUMBER, NUMBER, NUMBER]] }
+    // TODO: IMPORTANT: items order is not guaranteed for objects: https://stackoverflow.com/a/5525820/4117431
+
     $log.log(biorhythmsData);
-    return {daysLived: daysLived, weeksLived: weeksLived, yearsLived: yearsLived, biorhythmsData};
+    return {daysLived: daysLived, weeksLived: weeksLived, yearsLived: yearsLived, biorhythmsData: biorhythmsData};
   };
 
   return calculator;

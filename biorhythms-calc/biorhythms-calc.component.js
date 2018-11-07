@@ -13,7 +13,7 @@ function BiorhythmsCalcController($scope, $filter, $log, calculator) {
   $ctrl.birthday = null;
   $log.log(calculator);
 
-  $ctrl.setColor = function(num) {
+  $ctrl.setColor = function(num) { // TODO: getColor
     if (num > 0) {
       return 'positive';
     } else if (num < 0) {
