@@ -33,24 +33,4 @@ myApp
     ChartJsProvider.setOptions('line', {
       showLines: true
     });
-  }])
-  .controller("LineCtrl", ['$scope', '$log', '$timeout', '$filter', 'calculator', function ($scope, $log, $timeout, $filter, calculator) {
-
-    $scope.series = ['Physical', 'Emotional', 'Intellectual'];
-    $scope.data = [];
-    $scope.labels = [];
-
-    $scope.$on('check', function() {
-      $scope.data = [
-        calculator.physForChart,
-        calculator.emotForChart,
-        calculator.intelForChart
-      ];
-      $scope.labels = calculator.datesForChart;
-      $scope.$emit('show');
-    });
-
-    $scope.onClick = function(points, evt) {
-      console.log(points, evt);
-    };
   }]);
