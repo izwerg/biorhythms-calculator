@@ -3,8 +3,8 @@
   <form>
     <label for="birthday">Please enter your birthday:</label>
     <input type="date" id="birthday" ng-model="bc.birthday" max="{{bc.birthdayMax | date:'yyyy-MM-dd'}}" min="{{bc.birthdayMin | date:'yyyy-MM-dd'}}">
-    <button class="btn" id="PDFBtn" ng-click="bc.getPDF()">download results in PDF</button>
   </form>
+  <button class="btn" id="PDFBtn" ng-click="bc.getPDF()">download results in PDF</button>
   <p ng-bind="bc.times" ng-show="bc.tableData"></p>
 </div>
 <div class="outer-cont" ng-class="bc.show">

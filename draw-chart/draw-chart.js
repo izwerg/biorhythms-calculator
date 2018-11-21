@@ -6,14 +6,6 @@ myApp
     ChartJsProvider.setOptions({
       chartColors: ['#0006ff', '#eaa527', '#ad45ce'],
       responsive: true,
-      title: {
-        display: true,
-        text: 'A physical biorhythm cycle lasts 23 days, emotional - 28, intellectual - 33.',
-        fontStyle: 'bold',
-        fontSize: 20,
-        fontColor: '#222',
-        padding: 30
-      },
       elements: {
         line: {
           fill: false,
