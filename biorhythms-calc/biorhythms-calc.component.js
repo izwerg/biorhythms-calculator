@@ -74,15 +74,12 @@ function BiorhythmsCalc($scope, $filter, $timeout, $log, calculateBiorhythms, ca
     if (!bc.birthday) {
       return;
     }
-    var lived = calculateTimeLived(birthday);
-    $log.log('lived: ', lived);
-    var biorhythms = calculateBiorhythms(lived.days);
-    $log.log('biorhythms: ', biorhythms);
+    bc.lived = calculateTimeLived(birthday);
+    $log.log('lived: ', bc.lived);
+    bc.tableData = calculateBiorhythms(bc.lived.days);
+    $log.log('biorhythms: ', bc.tableData);
 
-    bc.times = 'You are ' + lived.days + ' days, ' + lived.weeks + ' weeks, and ' + lived.years + ' years old by now.';
-    bc.tableData = biorhythms;
-
-    var bioForChart = convertForChart(biorhythms);
+    var bioForChart = convertForChart(bc.tableData);
 
     function convertForChart(bior) {
       var chartVals = [[], [], [], []];
