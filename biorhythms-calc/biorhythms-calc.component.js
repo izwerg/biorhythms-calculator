@@ -33,7 +33,7 @@ function BiorhythmsCalc($scope, $filter, $timeout, $log, calculateBiorhythms, ca
     var emArgs = Array.from(bc.data[1]);
     var inArgs = Array.from(bc.data[2]);
 
-    function makeArr(dates, a, b, c,) {
+    function makeArr(dates, a, b, c) {
       var newArr = [];
       for (var y = 0; y < dates.length; y++) {
         newArr.push([]);
