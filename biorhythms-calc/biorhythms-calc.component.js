@@ -21,7 +21,6 @@ function BiorhythmsCalc($scope, $filter, $timeout, $log, calculateBiorhythms, ca
   bc.birthday = null;
   bc.birthdayMax = new Date();
   bc.birthdayMin = new Date('Jan 1 1900');
-  bc.show = 'not-showed';
 
   bc.getPDF = function() {
     if (!bc.birthday) {
@@ -98,10 +97,6 @@ function BiorhythmsCalc($scope, $filter, $timeout, $log, calculateBiorhythms, ca
         labels: chartVals[0],
         series: ['Physical', 'Emotional', 'Intellectual']
       };
-    }
-
-    if (bc.show === 'not-showed'){
-      bc.show = 'showed';
     }
 
     bc.data = bioForChart.data;
