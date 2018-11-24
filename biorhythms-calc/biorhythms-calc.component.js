@@ -27,10 +27,10 @@ function BiorhythmsCalc($scope, $filter, $timeout, $log, calculateBiorhythms, ca
       return;
     }
     var doc = new jsPDF('p', 'pt');
-    var daArgs = Array.from(bc.labels);
-    var phArgs = Array.from(bc.data[0]);
-    var emArgs = Array.from(bc.data[1]);
-    var inArgs = Array.from(bc.data[2]);
+    var daArgs = bc.labels;
+    var phArgs = bc.data[0];
+    var emArgs = bc.data[1];
+    var inArgs = bc.data[2];
 
     function makeArr(dates, a, b, c) {
       var newArr = [];
