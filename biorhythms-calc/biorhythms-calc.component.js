@@ -86,9 +86,7 @@ function BiorhythmsCalc($scope, $filter, $timeout, $log, calculateBiorhythms, ca
 
       for (var obj = 0; obj < bior.length; obj++) {
         for (var num = 0; num < chartVals.length; num++) {
-          !num ?
-            chartVals[num].push($filter('date')(bior[obj][keys[num]], 'd MMM')) :
-            chartVals[num].push(bior[obj][keys[num]]);
+          chartVals[num].push(!num ? $filter('date')(bior[obj][keys[num]], 'd MMM') : bior[obj][keys[num]]);
         }
       }
 
