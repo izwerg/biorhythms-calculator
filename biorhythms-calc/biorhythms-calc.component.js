@@ -50,8 +50,7 @@ function BiorhythmsCalc($scope, $filter, $timeout, $log, calculateBiorhythms, ca
     // doc.text('Today: ' + $filter('date')(bc.birthdayMax, 'dd.MM.yyyy'), 40, 780, {});
     doc.autoTable(columns, rows);
 
-    var range = document.createRange();
-    var canvas = range.startContainer.getElementsByTagName('canvas')[0];
+    var canvas = document.getElementsByTagName('canvas')[0];
     doc.addPage();
     doc.addImage(canvas, 'PNG', 20, 20, 500, 240, 'no alias', 'NONE', 0);
     // or chart in larger size:
