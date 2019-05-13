@@ -1,0 +1,14 @@
+<html>
+<head>
+  <script src="https://moment.github.io/luxon/global/luxon.min.js"></script>
+</head>
+
+<body>
+<script>
+  var DateTime = luxon.DateTime;
+  var diff = DateTime.local().diff(DateTime.fromISO('1982-06-05'), 'days').toObject();
+  console.log('diff', diff);
+</script>
+</body>
+
+</html>
